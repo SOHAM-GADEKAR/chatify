@@ -1,9 +1,5 @@
 // const express = require('express');
-import dotenv from 'dotenv';
-dotenv.config({ debug: true });
-
-
-console.log("ENV CHECK →", process.env.MONGO_URI);
+import { ENV } from './lib/env.js';
 
 
 import express from 'express';
@@ -16,7 +12,7 @@ import messageRoutes from './routes/message.route.js';
 const app = express();
 const __dirname = path.resolve();
 
-const PORT = process.env.PORT || 3000;
+const PORT = ENV.PORT || 3000;
 
 app.use(express.json()) //req.body
 
@@ -24,7 +20,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
 //make ready for deployment
-if(process.env.NODE_ENV === "production"){
+if(ENV.NODE_ENV === "production"){
     app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
     app.get("*", (_,res) => {
